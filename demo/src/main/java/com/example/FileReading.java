@@ -13,27 +13,19 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-//"E:\\Estudos\\cli\\demo\\src\\main\\resources\\teste_monise.xlsx"
 public class FileReading {
-
    public List<File> readFiles(String path) throws IOException {
-
       List<File> files = new ArrayList<>();
 
-      // recuperando o arquivo
       FileInputStream file = new FileInputStream(path);
 
-      // setando a aba do arquivo
       Workbook workbook = new XSSFWorkbook(file);
       Sheet sheet = workbook.getSheetAt(0);
 
-      // setando as linhas do arquivo
       List<Row> rows = (List<Row>) toList(sheet.iterator());
 
-      // Obter o cabeçalho da primeira linha
       List<Cell> headerCells = (List<Cell>) toList(rows.get(0).cellIterator());
 
-      // Verificar se as colunas "Nome" e "Email" estão presentes no cabeçalho
       int nomeIndex = findColumnIndex(headerCells, "nome");
       int emailIndex = findEmailColumnIndex(headerCells);
 
@@ -41,15 +33,11 @@ public class FileReading {
          throw new IllegalArgumentException("As colunas 'Nome' e 'Email' são necessárias no arquivo Excel.");
       }
 
-      // Remover a linha do cabeçalho
       rows.remove(0);
 
       rows.forEach(row -> {
-         // setando as celulas
          List<Cell> cells = (List<Cell>) toList(row.cellIterator());
 
-         // Verificar se as células de "Nome" e "Email" estão presentes antes de criar o
-         // objeto File
          if (cells.size() > nomeIndex && cells.size() > emailIndex) {
             File fileCheck = File.builder()
                   .name(cells.get(nomeIndex).getStringCellValue())
@@ -71,7 +59,7 @@ public class FileReading {
             return i;
          }
       }
-      return -1; // Retorna -1 se a coluna "email" ou "e-mail" não for encontrada
+      return -1;
    }
 
    private int findColumnIndex(List<Cell> headerCells, String columnName) {
@@ -81,11 +69,10 @@ public class FileReading {
             return i;
          }
       }
-      return -1; // Retorna -1 se a coluna não for encontrada
+      return -1;
    }
 
    public List<?> toList(Iterator<?> iterator) {
-
       return IteratorUtils.toList(iterator);
    }
 
@@ -99,11 +86,8 @@ public class FileReading {
    public List<String> extractData(List<File> files) {
       List<String> extractedData = new ArrayList<>();
       for (File file : files) {
-         // extractedData.add(file.getName());
          extractedData.add(file.getEmail());
-         // Ajuste conforme necessário para extrair os dados desejados
       }
       return extractedData;
    }
-
 }
