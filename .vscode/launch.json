@@ -11,8 +11,8 @@
       "mainClass": "${file}",
       "args": [
         "-n",
-        "E:\\Estudos\\cli\\demo\\src\\main\\resources\\teste_monise.xlsx",
-         "-2", "E:\\Estudos\\cli\\demo\\src\\main\\resources\\op_2_monise.xlsx", "-s", "E:\\Estudos\\cli\\output.xlsx"
+        "E:\\Estudos\\cli\\demo\\src\\main\\resources\\planilha1.xlsx",
+         "-2", "E:\\Estudos\\cli\\demo\\src\\main\\resources\\planilha2.xlsx", "-s", "E:\\Estudos\\cli\\output.xlsx"
       ] // Argumentos para o programa
     },
     {
