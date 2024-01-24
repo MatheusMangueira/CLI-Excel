@@ -1,32 +1,34 @@
 package com.example;
 
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class ExcelWriter {
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-   public static void writeResultsToExcel(String outputPath, List<String> commonItems, List<String> differentItems) {
+public class ExcelWriter {
+   public static void writeResultsToExcel(String outputPath, List<String> commonItems,
+         List<String> differentItemsTable1, List<String> differentItemsTable2) {
       try (Workbook workbook = new XSSFWorkbook()) {
          Sheet sheet = workbook.createSheet("Resultados");
 
-         // Estilo para células com itens comuns (verde)
          CellStyle greenCellStyle = createCellStyle(workbook, IndexedColors.GREEN);
-
-         // Estilo para células com itens diferentes (vermelho)
          CellStyle redCellStyle = createCellStyle(workbook, IndexedColors.RED);
 
          int rowNumber = 0;
 
-         // Escrever cabeçalho
          Row headerRow = sheet.createRow(rowNumber++);
          headerRow.createCell(0).setCellValue("Email");
          headerRow.createCell(1).setCellValue("Status");
+         headerRow.createCell(2).setCellValue("Tabela");
 
-         // Escrever itens comuns (verde)
          for (String item : commonItems) {
             Row row = sheet.createRow(rowNumber++);
             row.createCell(0).setCellValue(item);
@@ -35,16 +37,24 @@ public class ExcelWriter {
             statusCell.setCellStyle(greenCellStyle);
          }
 
-         // Escrever itens diferentes (vermelho)
-         for (String item : differentItems) {
+         for (String item : differentItemsTable1) {
             Row row = sheet.createRow(rowNumber++);
             row.createCell(0).setCellValue(item);
             Cell statusCell = row.createCell(1);
             statusCell.setCellValue("Diferente");
             statusCell.setCellStyle(redCellStyle);
+            row.createCell(2).setCellValue("Tabela 1");
          }
 
-         // Salvar o arquivo Excel
+         for (String item : differentItemsTable2) {
+            Row row = sheet.createRow(rowNumber++);
+            row.createCell(0).setCellValue(item);
+            Cell statusCell = row.createCell(1);
+            statusCell.setCellValue("Diferente");
+            statusCell.setCellStyle(redCellStyle);
+            row.createCell(2).setCellValue("Tabela 2");
+         }
+
          try (FileOutputStream fileOut = new FileOutputStream(outputPath)) {
             workbook.write(fileOut);
          }
